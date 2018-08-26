@@ -3,18 +3,18 @@ package com.gerberjava.kursspring.domain.repository;
 
 
 import com.gerberjava.kursspring.domain.Knight;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
+import com.gerberjava.kursspring.utils.Ids;
 
 import javax.annotation.PostConstruct;
 
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 
 public class InMemoryRepository implements KnightRepository {
-    Map<String, Knight> knights = new HashMap<>();
+    Map<Integer, Knight> knights = new HashMap<>();
 
     public InMemoryRepository()
     {
@@ -25,7 +25,14 @@ public class InMemoryRepository implements KnightRepository {
     @Override
     public void createKnight(String name, int age)
     {
-        knights.put(name,new Knight(name,age));
+        Knight newKnight = new Knight(name,age);
+        newKnight.setId(Ids.generateNewId(knights.keySet()));
+        knights.put(newKnight.getId(),newKnight);
+    }
+    @Override
+    public void updateKnight(int id, Knight knight)
+    {
+        knights.put(id,knight);
     }
 
     @Override
@@ -35,15 +42,17 @@ public class InMemoryRepository implements KnightRepository {
     }
 
     @Override
-    public Knight getKnight(String name)
+    public Optional<Knight>  getKnight(String name)
     {
-        return knights.get(name);
+        Optional<Knight> knightByName = knights.values().stream().filter(knight -> knight.getName().equals(name)).findAny();
+
+        return knightByName;
     }
 
     @Override
-    public void deleteKnight(String name)
+    public void deleteKnight(Integer id)
     {
-        knights.remove(name);
+        knights.remove(id);
     }
 
     @Override
@@ -52,6 +61,23 @@ public class InMemoryRepository implements KnightRepository {
     {
         createKnight("Lancelot",29);
         createKnight("Percival",25);
+//        for(int i=0;i<100;i++)
+//        {
+//            createKnight("Lancelot"+i,i);
+//
+//        }
+
+    }
+
+    @Override
+    public void createKnight(Knight knight) {
+        knight.setId(Ids.generateNewId(knights.keySet()));
+        knights.put(knight.getId(),knight);
+    }
+
+    @Override
+    public Knight getKnightById(Integer id) {
+        return knights.get(id);
     }
 
     @Override

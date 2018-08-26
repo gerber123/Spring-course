@@ -6,6 +6,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.annotation.PostConstruct;
 import java.util.Collection;
+import java.util.Optional;
 
 
 public class DBKnightRepository implements KnightRepository
@@ -25,14 +26,14 @@ public class DBKnightRepository implements KnightRepository
     }
 
     @Override
-    public Knight getKnight(String name)
+    public Optional<Knight> getKnight(String name)
     {
         System.out.println("Używam bazy danych");
         throw new NotImplementedException();
     }
 
     @Override
-    public void deleteKnight(String name)
+    public void deleteKnight(Integer id)
     {
         System.out.println("Używam bazy danych");
         throw new NotImplementedException();
@@ -45,6 +46,15 @@ public class DBKnightRepository implements KnightRepository
 
     }
 
+    @Override
+    public void createKnight(Knight knight) {
+
+    }
+
+    @Override
+    public Knight getKnightById(Integer id) {
+        return null;
+    }
 
 
 }

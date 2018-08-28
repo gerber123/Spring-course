@@ -34,7 +34,7 @@ public class QuestController
         List<Quest> notStartedQuest=questService.getAllNotStartedQuests();
         model.addAttribute("knight",knight);
         model.addAttribute("notStartedQuests",notStartedQuest);
-
+        http://localhost:8080/assignQuests?knightId=0
         return "assignQuests";
     }
     @RequestMapping(value = "/assignQuests", method = RequestMethod.POST)
